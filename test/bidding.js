@@ -12,6 +12,20 @@ contract('Bidding', function(accounts) {
     });
   });
 
+  it("should not change highest bid after too low bid", function(done) {
+    const FIRST_BID = STARTING_BID - 1;
+    var bidding;
+    Bidding.deployed().then(function(instance) {
+      bidding = instance;
+      return bidding.placeBid("First bid", FIRST_BID, {from: accounts[2]});
+    }).then(function () {
+      return bidding.getHighestBid();
+    }).then(function (bid) {
+      assert.equal(bid, STARTING_BID, "Highest bid is equal to previous bid.");
+      done();      
+    });
+  });
+
   it("should get highest bid after first bid", function(done) {
     const FIRST_BID = STARTING_BID + 1;
     var bidding;
@@ -23,6 +37,20 @@ contract('Bidding', function(accounts) {
     }).then(function (bid) {
       assert.equal(bid, FIRST_BID, "Highest bid is equal to first bid.");
       done();      
+    });
+  });
+
+  it("should not allowed to end bid before the expiration", function(done) {
+    Bidding.deployed().then(async function (instance) {
+      var revertFound;
+      try {
+        await instance.bidEnd();
+      } catch (error) {
+        revertFound = error.message.search("revert") >= 0;
+      } finally {
+        assert(revertFound, "Expected revert");
+        done();
+      }
     });
   });
 
