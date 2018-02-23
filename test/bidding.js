@@ -7,7 +7,7 @@ contract('Bidding', function(accounts) {
     Bidding.deployed().then(function(instance) {
       return instance.getHighestBid();
     }).then(function (bid) {
-      assert.equal(bid, STARTING_BID, "Default highest bid is not equal to starting bid.");
+      assert.equal(bid, STARTING_BID, "Default highest bid is equal to starting bid.");
       done();      
     });
   });
@@ -31,12 +31,26 @@ contract('Bidding', function(accounts) {
     var bidding;
     Bidding.deployed().then(function(instance) {
       bidding = instance;
-      return bidding.placeBid("First bid", FIRST_BID, {from: accounts[2]});
+      return bidding.placeBid("First bid", FIRST_BID, {from: accounts[2], value: FIRST_BID});
     }).then(function () {
       return bidding.getHighestBid();
     }).then(function (bid) {
       assert.equal(bid, FIRST_BID, "Highest bid is equal to first bid.");
-      done();      
+      done();
+    });
+  });
+
+  it("should get bid amount back", function(done) {
+    const BID = STARTING_BID + 2;
+    var bidding;
+    Bidding.deployed().then(function(instance) {
+      bidding = instance;
+      return bidding.placeBid("Second bid", BID, {from: accounts[1], value: BID});
+    }).then(function () {
+      return bidding.claimBidAmount({from: accounts[2]});
+    }).then(function () {
+      assert.isTrue(true, "Bid amount returned successfully.");
+      done();
     });
   });
 
