@@ -6,7 +6,7 @@ contract Bidding {
   uint duration;
   uint startingBid;
   uint createdAt;
-  address owner;
+  address public owner;
   Bidder highestBidder;
 
   struct Bidder {
