@@ -33,7 +33,7 @@ contract Bidding {
     _;
   }
 
-  event HighBidChanged(address indexed _address, bytes _name, uint newHighestBid);
+  event HighestBidChanged(address indexed _address, bytes _name, uint newHighestBid);
   event BidFailed(address indexed _address, bytes _name, uint bidAmtount);
   
   function Bidding(string _name, string _description, uint _duration, uint _startingBid) public {
@@ -57,7 +57,7 @@ contract Bidding {
     bool receivedWei = _amount == msg.value;
     var newBidder = Bidder(msg.sender, _name, _amount, receivedWei);
     if (newBidder.value > getHighestBid()) {
-      HighBidChanged(msg.sender, bytes(_name), _amount);
+      HighestBidChanged(msg.sender, bytes(_name), _amount);
       if (highestBidder.eligibleToClaim) {
         bidders.push(highestBidder);        
       }

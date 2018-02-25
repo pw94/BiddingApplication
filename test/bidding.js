@@ -18,7 +18,16 @@ contract('Bidding', function(accounts) {
     Bidding.deployed().then(function(instance) {
       bidding = instance;
       return bidding.placeBid("First bid", FIRST_BID, {from: accounts[2]});
-    }).then(function () {
+    }).then(function (result) {
+      var logFound = false;
+      for (var i = 0; i < result.logs.length; i++) {
+        var log = result.logs[i];
+        if (log.event == "BidFailed") {
+          logFound = true;
+          break;
+        }
+      }
+      assert.isTrue(logFound, "Event emitted.");
       return bidding.getHighestBid();
     }).then(function (bid) {
       assert.equal(bid, STARTING_BID, "Highest bid is equal to previous bid.");
@@ -32,7 +41,16 @@ contract('Bidding', function(accounts) {
     Bidding.deployed().then(function(instance) {
       bidding = instance;
       return bidding.placeBid("First bid", FIRST_BID, {from: accounts[2], value: FIRST_BID});
-    }).then(function () {
+    }).then(function (result) {
+      var logFound = false;
+      for (var i = 0; i < result.logs.length; i++) {
+        var log = result.logs[i];
+        if (log.event == "HighestBidChanged") {
+          logFound = true;
+          break;
+        }
+      }
+      assert.isTrue(logFound, "Event emitted.");
       return bidding.getHighestBid();
     }).then(function (bid) {
       assert.equal(bid, FIRST_BID, "Highest bid is equal to first bid.");
