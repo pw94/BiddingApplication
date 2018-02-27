@@ -1,7 +1,7 @@
 pragma solidity ^0.4.4;
 
 contract Bidding {
-  string name;
+  string public name;
   string description;
   uint duration;
   uint startingBid;
@@ -91,5 +91,9 @@ contract Bidding {
 
   function bidEnd() public onlyOwner expired {
     selfdestruct(owner);
+  }
+
+  function changeOwner(address newOwner) public onlyOwner {
+    owner = newOwner;
   }
 }

@@ -10,7 +10,12 @@ contract BiddingsFactory {
 
   function create(string name, string description, uint duration, uint startingBid) public {
     var bidding = new Bidding(name, description, duration, startingBid);
+    bidding.changeOwner(msg.sender);
     biddings.push(bidding);
+  }
+
+  function getLastBidding() public view returns (Bidding) {
+    return biddings[biddings.length-1];
   }
 
   function remove(uint index) public {
