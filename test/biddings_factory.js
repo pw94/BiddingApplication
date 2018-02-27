@@ -13,4 +13,21 @@ contract('BiddingsFactory', function(accounts) {
       done();
     });
   });
+
+  it("should create second contract and remove it", function(done) {
+    BiddingsFactory.deployed().then(async function (biddings_factory) {
+      await biddings_factory.create("Second", "Second bidding", 2, 20, {from: accounts[2]});
+      var biddings = await biddings_factory.getAllBiddings();
+      assert.equal(biddings.length, 2, "There are two biddings.");
+      var biddingAddress = await biddings_factory.getLastBidding();
+      var bidding = await Bidding.at(biddingAddress);
+      setTimeout(async function () {
+        await biddings_factory.remove(biddings.length - 1);
+        await bidding.bidEnd({from: accounts[2]});
+        var biddingsNumber = await biddings_factory.getNumberOfBiddings.call();
+        assert.equal(biddingsNumber, 1, "There is only one bidding.");
+        done();
+      }, 1000 * 2);
+    });
+  });
 });

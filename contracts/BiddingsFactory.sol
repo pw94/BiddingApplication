@@ -26,6 +26,10 @@ contract BiddingsFactory {
     biddings.length--;
   }
 
+  function getNumberOfBiddings() public constant returns (uint) {
+    return biddings.length;
+  }
+
   function getAllBiddings() public constant returns (Bidding[]) {
     return biddings;
   }
