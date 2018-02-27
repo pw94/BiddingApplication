@@ -103,4 +103,17 @@ contract('Bidding', function(accounts) {
       }, 1000 * CONTRACT_DURATION);
     });
   });
+
+  it("should allowed to end bid", function(done) {
+    var bidding;
+    Bidding.deployed().then(function (instance) {
+      bidding = instance;
+      setTimeout(async function () {
+        await bidding.bidEnd();
+        var owner = await bidding.owner.call();
+        assert.equal(owner, 0x0, "Bidding was destroyed.");
+        done();
+      }, 1000 * CONTRACT_DURATION);
+    });
+  })
 });
