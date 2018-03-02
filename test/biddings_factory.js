@@ -27,7 +27,7 @@ contract('BiddingsFactory', function(accounts) {
         var biddingsNumber = await biddings_factory.getNumberOfBiddings.call();
         assert.equal(biddingsNumber, 1, "There is only one bidding.");
         done();
-      }, 1000 * 2);
+      }, 1000 * 3);
     });
   });
 });
