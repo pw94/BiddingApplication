@@ -5,7 +5,7 @@ contract('Bidding', function(accounts) {
   const STARTING_BID = 10;
   it("should use starting bid as highest bid when there are not any bids", function(done) {
     Bidding.deployed().then(function(instance) {
-      return instance.getHighestBid();
+      return instance.getHighestBid.call();
     }).then(function (bid) {
       assert.equal(bid, STARTING_BID, "Default highest bid is equal to starting bid.");
       done();      
@@ -28,7 +28,7 @@ contract('Bidding', function(accounts) {
         }
       }
       assert.isTrue(logFound, "Event emitted.");
-      return bidding.getHighestBid();
+      return bidding.getHighestBid.call();
     }).then(function (bid) {
       assert.equal(bid, STARTING_BID, "Highest bid is equal to previous bid.");
       done();      
@@ -51,7 +51,7 @@ contract('Bidding', function(accounts) {
         }
       }
       assert.isTrue(logFound, "Event emitted.");
-      return bidding.getHighestBid();
+      return bidding.getHighestBid.call();
     }).then(function (bid) {
       assert.equal(bid, FIRST_BID, "Highest bid is equal to first bid.");
       done();
