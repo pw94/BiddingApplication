@@ -15,6 +15,7 @@ contract BiddingsFactory {
   }
 
   function getLastBidding() public view returns (Bidding) {
+    require(biddings.length > 0);
     return biddings[biddings.length-1];
   }
 
